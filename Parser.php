@@ -6,7 +6,7 @@ class Parser {
 		$this->log("start analiyzing");
 		$code = $this->getCodeFromFile($className);
 		$methods = $this->getAllMethodsFromCode($code);
-		
+		return $methods;
 	}
 	
 	private function getCodeFromFile(string $file): string {
@@ -15,14 +15,13 @@ class Parser {
         return $code;
     }
 	
-	private function getAllMethodsFromCode(string $code): string {
+	private function getAllMethodsFromCode(string $code): array {
 		$code = str_replace(array("\r","\n"),"",$code);
 		preg_match_all("/function[a-zA-Z0-9 ,\n()\$_]+\{/", $code, $methods, PREG_SET_ORDER);
-		$methods = $this->cleanMethods($methods);
-		echo '<pre>';var_dump($methods);die();
-        /*if (!empty($names)) {
-            $this->fillUniqNames($names);
-        }*/
+        if (!empty($methods)) {
+            return $this->cleanMethods($methods);
+        }
+		return [];
     }
 	
 	private function cleanMethods(array $methods): array {
