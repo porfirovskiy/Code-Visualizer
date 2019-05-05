@@ -3,13 +3,14 @@
 class Parser {
 	
 	private $methods = [];
+	private $methodsWithSubMethods = [];
 	
 	public function analyze($className) {
 		$this->log("start analiyzing");
 		$code = $this->getCodeFromFile($className);
-		$methods = $this->getAllMethodsFromCode($code);
-		echo '<pre>';var_dump($methods);
-		$methods = $this->getSubMethods($code, $methods);
+		$this->getAllMethodsFromCode($code);
+		$this->getSubMethods($code);
+		echo '<pre>';var_dump($this->methodsWithSubMethods);die();
 		return $methods;
 	}
 	
@@ -20,12 +21,11 @@ class Parser {
         return $code;
     }
 	
-	private function getAllMethodsFromCode(string $code): array {
+	private function getAllMethodsFromCode(string $code) {
 		preg_match_all("/function[a-zA-Z0-9 ,\n()\$_]+\{/", $code, $methods, PREG_SET_ORDER);
         if (!empty($methods)) {
-            return $this->cleanMethods($methods);
+            $this->methods = $this->cleanMethods($methods);
         }
-		return [];
     }
 	
 	private function cleanMethods(array $methods): array {
@@ -35,27 +35,24 @@ class Parser {
 		}, $methods);
     }
 	
-	private function getSubMethods(string $code, array $methods): array {
-		foreach($methods as $method) {
+	private function getSubMethods(string $code) {
+		foreach($this->methods as $method) {
 			$methodName = $method;
 			$method = preg_replace(['/\(/', '/\)/'], ['\(', '\)'], $method);
 			$method = str_replace('$', '\$', $method);
-			echo '<pre>';var_dump($method);
-			preg_match_all('/function[ ]+'.$method.'[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}+\/"!*\\\]+}/', $code, $subMethods, PREG_SET_ORDER);
+			preg_match_all('/function[ ]+'.$method.'[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}+\/"!\t*\\\]+?(public|private|protected|static|function)/', $code, $subMethods, PREG_SET_ORDER);
 			if (!empty($subMethods)) {
 				$subMethodsString = $subMethods[0][0];
 				preg_match_all("/\\$[a-zA-Z0-9 ,\n()\$_]+->[a-zA-Z0-9 ,\n()\$_\->]+\);/", $subMethodsString, $list, PREG_SET_ORDER);
 				if (!empty($list)) {
-					$this->methods[$methodName] = $list;
+					$this->methodsWithSubMethods[$methodName] = $list;
 				}
 			}
 		}
-		echo '<pre>';var_dump($this->methods);die();	
-		return [];
     }
 	
 	private function log(string $text) {
 		echo "\0$text ...\n";
     }
-
+	
 }
