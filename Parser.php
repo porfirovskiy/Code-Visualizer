@@ -2,16 +2,15 @@
 
 class Parser {
 	
-	private $methods = [];
-	private $methodsWithSubMethods = [];
+	public $methods = [];
+	public $methodsWithSubMethods = [];
 	
-	public function analyze($className) {
+	public function analyze(string $className) {
 		$this->log("start analiyzing");
 		$code = $this->getCodeFromFile($className);
 		$this->getAllMethodsFromCode($code);
 		$this->getSubMethods($code);
-		echo '<pre>';var_dump($this->methodsWithSubMethods);die();
-		return $methods;
+		//echo '<pre>';var_dump($this->methodsWithSubMethods);die();
 	}
 	
 	private function getCodeFromFile(string $file): string {
