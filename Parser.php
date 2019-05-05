@@ -36,32 +36,21 @@ class Parser {
     }
 	
 	private function getSubMethods(string $code, array $methods): array {
-		//preg_match_all("/\\$[a-zA-Z0-9 ,\n()\$_]+->[a-zA-Z0-9 ,\n()\$_\->]+\);/", $code, $list, PREG_SET_ORDER);
-		//echo '<pre>';var_dump($list);die();
-		
-		//function[ ]+fillUniqEntities\(\$khh, \$jk\)[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}]+}
 		foreach($methods as $method) {
-			//$method = 'ddff($dff, $ggghh)';
 			$methodName = $method;
 			$method = preg_replace(['/\(/', '/\)/'], ['\(', '\)'], $method);
 			$method = str_replace('$', '\$', $method);
 			echo '<pre>';var_dump($method);
-			preg_match_all('/function[ ]+'.$method.'[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}+\/"]+}/', $code, $subMethods, PREG_SET_ORDER);
+			preg_match_all('/function[ ]+'.$method.'[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}+\/"!*\\\]+}/', $code, $subMethods, PREG_SET_ORDER);
 			if (!empty($subMethods)) {
 				$subMethodsString = $subMethods[0][0];
 				preg_match_all("/\\$[a-zA-Z0-9 ,\n()\$_]+->[a-zA-Z0-9 ,\n()\$_\->]+\);/", $subMethodsString, $list, PREG_SET_ORDER);
 				if (!empty($list)) {
 					$this->methods[$methodName] = $list;
-				} else {
-					echo '<pre>';var_dump($subMethodsString);die();	
-				}
-			} else {
-				if ($methodName == 'getUniqNames($codeString)') {
-					echo '<pre>';var_dump($subMethods);die();
 				}
 			}
 		}
-		//echo '<pre>';var_dump($this->methods);die();	
+		echo '<pre>';var_dump($this->methods);die();	
 		return [];
     }
 	

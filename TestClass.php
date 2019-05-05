@@ -29,7 +29,7 @@ class Test
 
     private function getUniqNames($codeString)
     {
-        preg_match_all("/[[a-z0-9 ,]+]/", $codeString, $names, PREG_SET_ORDER);
+        preg_match_all("/[a-z0-9 *]+[[a-z0-9 ,]+\]/", $codeString, $names, PREG_SET_ORDER);
         if (!empty($names)) {
             $this->fillUniqNames($names);
         }
