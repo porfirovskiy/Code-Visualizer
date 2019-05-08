@@ -10,9 +10,8 @@ Visualizer::showClassesMethods('TestClass.php', $parser->methods, $parser->metho
 /**
 Add:
  - namespaes
+ - make refactoring
  - comments
  - preg regex move out in class const!!
- 
-Make refactoring
-
+ - add Recursion for methods in dept
 */ 
