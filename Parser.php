@@ -36,7 +36,6 @@ class Parser {
 	
 	private function getSubMethods(string $code) {
 		foreach($this->methods as $method) {
-
 			$this->getSubMethodsR($method, $code);
 		}
     }
@@ -48,13 +47,17 @@ class Parser {
 			preg_match_all('/function[ ]+'.$method.'[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}+\/"\%.!:@?\'\t*\\\]+?(public|private|protected|static|function)/', $code, $subMethods, PREG_SET_ORDER);
 			if (!empty($subMethods)) {
 				$subMethodsString = $subMethods[0][0];
-				preg_match_all("/\\$[a-zA-Z0-9 ,\n()\$_]+->[a-zA-Z0-9 ,\n()\$_\->]+\);/", $subMethodsString, $list, PREG_SET_ORDER);
-				if (!empty($list)) {
-					$this->methodsWithSubMethods[$methodName] = $list;
-				}
+				$this->getSubMethodsRR($subMethodsString, $methodName);
 			}	
 	}
 	
+	private function getSubMethodsRR(string $subMethodsString, string $methodName) {
+		preg_match_all("/\\$[a-zA-Z0-9 ,\n()\$_]+->[a-zA-Z0-9 ,\n()\$_\->]+\);/", $subMethodsString, $list, PREG_SET_ORDER);
+				if (!empty($list)) {
+					$this->methodsWithSubMethods[$methodName] = $list;
+				}
+    	}	
+
 	private function log(string $text) {
 		echo "\0$text ...\n";
     }
