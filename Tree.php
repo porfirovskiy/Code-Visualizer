@@ -36,12 +36,14 @@ class Tree {
 	
 }
 
-$tree = new Tree();
+/*$tree = new Tree();
 $tree->add('0', ['1']);
 $tree->add('1', ['2', '3', '8']);
 $tree->add('3', ['4']);
+$tree->add('4', ['5', '6']);
+$tree->add('6', ['7']);
 
 //echo '<pre>';var_dump($tree->getStructure());
 
-$tree->getAroundTheStructure();
+$tree->getAroundTheStructure();*/
 

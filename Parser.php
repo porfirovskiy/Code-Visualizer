@@ -9,13 +9,19 @@ class Parser {
 	
 	public $methods = [];
 	public $methodsWithSubMethods = [];
+	public $tree;
+	
+	function __construct() {
+		$this->tree = new Tree();
+    }
 	
 	public function analyze(string $className) {
 		$this->log("start analiyzing");
 		$code = $this->getCodeFromFile($className);
 		$this->getAllMethodsFromCode($code);
 		$this->getSubMethods($this->methods, $code);
-		echo '<pre>';var_dump($this->methodsWithSubMethods);die();
+		echo '<pre>';var_dump($this->tree);
+		//echo '<pre>';var_dump($this->methodsWithSubMethods);die();
 	}
 	
 	private function getCodeFromFile(string $file): string {
@@ -38,7 +44,7 @@ class Parser {
 			return trim($name);
 		}, $methods);
     }
-
+	
 	private function getSubMethods($methods, $code) {
 		foreach($methods as $method) {
 			$methodName = $method;
@@ -47,38 +53,20 @@ class Parser {
 			preg_match_all(self::SUB_PATTERN_BEGIN.$method.self::SUB_PATTERN_END, $code, $subMethods, PREG_SET_ORDER);
 			if (!empty($subMethods)) {
 				$subMethodsString = $subMethods[0][0];
-				$this->getSubMethodsRR($subMethodsString, $methodName, $code);
+				$this->getSubMethodsR($subMethodsString, $methodName, $code);
 			}	
 		}
 	}
 	
-	private function getSubMethodsR($methods, $code) {
-		foreach($methods as $method) {
-			$methodName = $method;
-			$method = preg_replace(['/\(/', '/\)/'], ['\(', '\)'], $method);
-			$method = str_replace('$', '\$', $method);
-			preg_match_all(self::SUB_PATTERN_BEGIN.$method.self::SUB_PATTERN_END, $code, $subMethods, PREG_SET_ORDER);
-			if (!empty($subMethods)) {
-				$subMethodsString = $subMethods[0][0];
-				$this->getSubMethodsRR($subMethodsString, $methodName, $code);
-			}	
-		}
-	}
-	
-	private function getSubMethodsRR(string $subMethodsString, string $methodName, string $code) {
+	private function getSubMethodsR(string $subMethodsString, string $methodName, string $code) {
 		preg_match_all(self::SUB_METHOD_PATTERN, $subMethodsString, $list, PREG_SET_ORDER);
 			if (!empty($list)) {
 				$list = array_map(function (array $rawName) {
 					$array = explode('->', $rawName[0]);
 					return end($array);
 				}, $list);
-				//echo '<pre>';var_dump($list);
-				if (isset($this->methodsWithSubMethods[$methodName])) {
-					$this->methodsWithSubMethods[$methodName][] = $list;
-				} else {
-					$this->methodsWithSubMethods[$methodName] = [$list];
-				}
-				echo '<pre>';var_dump($this->methodsWithSubMethods);
+				$this->tree->add($methodName, $list);
+				//echo '<pre>';var_dump($this->methodsWithSubMethods);
 				$this->getSubMethods($list, $code);
 			}
     	}	

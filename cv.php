@@ -2,6 +2,7 @@
 
 include_once 'Parser.php';
 include_once 'Visualizer.php';
+include_once 'Tree.php';
 
 $parser = new Parser();
 $parser->analyze('TestClass2.php');
