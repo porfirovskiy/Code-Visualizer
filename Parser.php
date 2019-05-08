@@ -20,7 +20,8 @@ class Parser {
 		$code = $this->getCodeFromFile($className);
 		$this->getAllMethodsFromCode($code);
 		$this->getSubMethods($this->methods, $code);
-		echo '<pre>';var_dump($this->tree);
+		echo '<pre>';var_dump($this->tree->getStructure());
+		$this->tree->getAroundTheStructure();
 		//echo '<pre>';var_dump($this->methodsWithSubMethods);die();
 	}
 	

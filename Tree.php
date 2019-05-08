@@ -16,8 +16,8 @@ class Tree {
 	
 	
 	public function getAroundTheStructure() {
-		echo "1\n";
-		$this->rec('1');
+		echo 'submit_seo_statistics($insert_array)'."\n";
+		$this->rec('submit_seo_statistics($insert_array)');
 	}
 	
 	private function rec($parent) {
