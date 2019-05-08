@@ -11,7 +11,7 @@ class Visualizer {
 	}
 	
 	public function createImage(string $title, array $methods,  array $subMethods) {
-		$image = @imagecreate(500, 700) or die("Error");
+		$image = @imagecreate(500, 2700) or die("Error");
 		$backgroundColor = imagecolorallocate($image, 0, 0, 0);
 		$textColor = imagecolorallocate($image, 233, 14, 91);
 		
