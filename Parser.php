@@ -14,8 +14,8 @@ class Parser {
 		$this->log("start analiyzing");
 		$code = $this->getCodeFromFile($className);
 		$this->getAllMethodsFromCode($code);
-		$this->getSubMethods($code);
-		//echo '<pre>';var_dump($this->methodsWithSubMethods);die();
+		$this->getSubMethods($this->methods, $code);
+		echo '<pre>';var_dump($this->methodsWithSubMethods);die();
 	}
 	
 	private function getCodeFromFile(string $file): string {
@@ -38,32 +38,48 @@ class Parser {
 			return trim($name);
 		}, $methods);
     }
-	
-	private function getSubMethods(string $code) {
-		foreach($this->methods as $method) {
-			$this->getSubMethodsR($method, $code);
-		}
-    }
 
-	private function getSubMethodsR($method, $code) {
+	private function getSubMethods($methods, $code) {
+		foreach($methods as $method) {
 			$methodName = $method;
 			$method = preg_replace(['/\(/', '/\)/'], ['\(', '\)'], $method);
 			$method = str_replace('$', '\$', $method);
 			preg_match_all(self::SUB_PATTERN_BEGIN.$method.self::SUB_PATTERN_END, $code, $subMethods, PREG_SET_ORDER);
 			if (!empty($subMethods)) {
 				$subMethodsString = $subMethods[0][0];
-				$this->getSubMethodsRR($subMethodsString, $methodName);
+				$this->getSubMethodsRR($subMethodsString, $methodName, $code);
 			}	
+		}
 	}
 	
-	private function getSubMethodsRR(string $subMethodsString, string $methodName) {
+	private function getSubMethodsR($methods, $code) {
+		foreach($methods as $method) {
+			$methodName = $method;
+			$method = preg_replace(['/\(/', '/\)/'], ['\(', '\)'], $method);
+			$method = str_replace('$', '\$', $method);
+			preg_match_all(self::SUB_PATTERN_BEGIN.$method.self::SUB_PATTERN_END, $code, $subMethods, PREG_SET_ORDER);
+			if (!empty($subMethods)) {
+				$subMethodsString = $subMethods[0][0];
+				$this->getSubMethodsRR($subMethodsString, $methodName, $code);
+			}	
+		}
+	}
+	
+	private function getSubMethodsRR(string $subMethodsString, string $methodName, string $code) {
 		preg_match_all(self::SUB_METHOD_PATTERN, $subMethodsString, $list, PREG_SET_ORDER);
 			if (!empty($list)) {
 				$list = array_map(function (array $rawName) {
-					return $rawName[0];
+					$array = explode('->', $rawName[0]);
+					return end($array);
 				}, $list);
 				//echo '<pre>';var_dump($list);
-				$this->methodsWithSubMethods[$methodName] = $list;
+				if (isset($this->methodsWithSubMethods[$methodName])) {
+					$this->methodsWithSubMethods[$methodName][] = $list;
+				} else {
+					$this->methodsWithSubMethods[$methodName] = [$list];
+				}
+				echo '<pre>';var_dump($this->methodsWithSubMethods);
+				$this->getSubMethods($list, $code);
 			}
     	}	
 
