@@ -2,6 +2,11 @@
 
 class Parser {
 	
+	const SUB_METHOD_PATTERN = "/\\$[a-zA-Z0-9 ,\n()\$_]+->[a-zA-Z0-9 ,\n()\$_\->]+\);/";
+	const FIRST_LEVEL_PATTERN = "/function[a-zA-Z0-9 ,\n()\$_]+\{/";
+	const SUB_PATTERN_BEGIN = '/function[ ]+';
+	const SUB_PATTERN_END = '[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}+\/"\%.!:@?\'\t*\\\]+?(public|private|protected|static|function)/';
+	
 	public $methods = [];
 	public $methodsWithSubMethods = [];
 	
@@ -21,7 +26,7 @@ class Parser {
     }
 	
 	private function getAllMethodsFromCode(string $code) {
-		preg_match_all("/function[a-zA-Z0-9 ,\n()\$_]+\{/", $code, $methods, PREG_SET_ORDER);
+		preg_match_all(self::FIRST_LEVEL_PATTERN, $code, $methods, PREG_SET_ORDER);
         if (!empty($methods)) {
             $this->methods = $this->cleanMethods($methods);
         }
@@ -44,7 +49,7 @@ class Parser {
 			$methodName = $method;
 			$method = preg_replace(['/\(/', '/\)/'], ['\(', '\)'], $method);
 			$method = str_replace('$', '\$', $method);
-			preg_match_all('/function[ ]+'.$method.'[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}+\/"\%.!:@?\'\t*\\\]+?(public|private|protected|static|function)/', $code, $subMethods, PREG_SET_ORDER);
+			preg_match_all(self::SUB_PATTERN_BEGIN.$method.self::SUB_PATTERN_END, $code, $subMethods, PREG_SET_ORDER);
 			if (!empty($subMethods)) {
 				$subMethodsString = $subMethods[0][0];
 				$this->getSubMethodsRR($subMethodsString, $methodName);
@@ -52,10 +57,14 @@ class Parser {
 	}
 	
 	private function getSubMethodsRR(string $subMethodsString, string $methodName) {
-		preg_match_all("/\\$[a-zA-Z0-9 ,\n()\$_]+->[a-zA-Z0-9 ,\n()\$_\->]+\);/", $subMethodsString, $list, PREG_SET_ORDER);
-				if (!empty($list)) {
-					$this->methodsWithSubMethods[$methodName] = $list;
-				}
+		preg_match_all(self::SUB_METHOD_PATTERN, $subMethodsString, $list, PREG_SET_ORDER);
+			if (!empty($list)) {
+				$list = array_map(function (array $rawName) {
+					return $rawName[0];
+				}, $list);
+				//echo '<pre>';var_dump($list);
+				$this->methodsWithSubMethods[$methodName] = $list;
+			}
     	}	
 
 	private function log(string $text) {

@@ -4,8 +4,8 @@ include_once 'Parser.php';
 include_once 'Visualizer.php';
 
 $parser = new Parser();
-$parser->analyze('TestClass.php');
-Visualizer::showClassesMethods('TestClass.php', $parser->methods, $parser->methodsWithSubMethods);
+$parser->analyze('TestClass2.php');
+Visualizer::showClassesMethods('TestClass2.php', $parser->methods, $parser->methodsWithSubMethods);
 
 /**
 Add:

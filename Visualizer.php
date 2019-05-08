@@ -11,7 +11,7 @@ class Visualizer {
 	}
 	
 	public function createImage(string $title, array $methods,  array $subMethods) {
-		$image = @imagecreate(500, 2700) or die("Error");
+		$image = @imagecreate(500, 1700) or die("Error");
 		$backgroundColor = imagecolorallocate($image, 0, 0, 0);
 		$textColor = imagecolorallocate($image, 233, 14, 91);
 		
@@ -26,7 +26,7 @@ class Visualizer {
 				$yy = $y + 10;
 				foreach ($subMethods[$method] as $subMethod) {
 					$textColor = imagecolorallocate($image, 0, 255, 0);
-					imagestring($image, 2, 25, $yy, $subMethod[0], $textColor);
+					imagestring($image, 2, 25, $yy, $subMethod, $textColor);
 					$yy += 10;
 				}
 			}
