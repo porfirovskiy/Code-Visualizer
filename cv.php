@@ -10,7 +10,8 @@ Visualizer::showClassesMethods('TestClass.php', $parser->methods, $parser->metho
 /**
 Add:
  - namespaes
- - commenst
+ - comments
+ - preg regex move out in class const!!
  
 Make refactoring
 
