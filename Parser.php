@@ -36,6 +36,12 @@ class Parser {
 	
 	private function getSubMethods(string $code) {
 		foreach($this->methods as $method) {
+
+			$this->getSubMethodsR($method, $code);
+		}
+    }
+
+	private function getSubMethodsR($method, $code) {
 			$methodName = $method;
 			$method = preg_replace(['/\(/', '/\)/'], ['\(', '\)'], $method);
 			$method = str_replace('$', '\$', $method);
@@ -46,9 +52,8 @@ class Parser {
 				if (!empty($list)) {
 					$this->methodsWithSubMethods[$methodName] = $list;
 				}
-			}
-		}
-    }
+			}	
+	}
 	
 	private function log(string $text) {
 		echo "\0$text ...\n";
