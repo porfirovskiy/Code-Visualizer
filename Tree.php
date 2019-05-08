@@ -24,7 +24,7 @@ class Tree {
 		if (isset($this->structure[$parent])) {
 			$string = '';
 			foreach ($this->structure[$parent] as $element) {
-				$string .= $element." ";
+				$string .= "(".$parent.")".$element." ";
 			}
 			echo $string."\n";
 			foreach ($this->structure[$parent] as $element) {
@@ -41,7 +41,7 @@ $tree->add('0', ['1']);
 $tree->add('1', ['2', '3', '8']);
 $tree->add('3', ['4']);
 
-echo '<pre>';var_dump($tree->getStructure());
+//echo '<pre>';var_dump($tree->getStructure());
 
 $tree->getAroundTheStructure();
 
