@@ -33,6 +33,29 @@ class Tree {
 			}
 		}
 	}
+
+	public function getAroundTheStructure2($hill, &$img, $textColor) {
+		imagestring($img, 5, 50, 30, $hill, $textColor);
+		echo $hill."\n";
+		$y = 70;
+		$this->rec2($hill, $img, $textColor, $y);
+	}
+	
+	private function rec2($parent, &$img, $textColor, &$y) {
+		if (isset($this->structure[$parent])) {
+			$string = '';
+			foreach ($this->structure[$parent] as $element) {
+				$string .= "(".$parent.")".$element." ";
+			}
+			echo $string."\n";
+			imagestring($img, 5, 50, $y, $string, $textColor);
+			$y += 50;
+			foreach ($this->structure[$parent] as $element) {
+				//echo $element."\n";
+				$this->rec2($element, $img, $textColor, $y);
+			}
+		}
+	}
 	
 }
 

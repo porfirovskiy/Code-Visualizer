@@ -6,7 +6,7 @@ include_once 'Tree.php';
 
 $parser = new Parser();
 $parser->analyze('TestClass2.php');
-Visualizer::showClassesMethods('TestClass2.php', $parser->methods, $parser->methodsWithSubMethods);
+Visualizer::showClassesMethods('TestClass2.php', $parser->methods, $parser->tree);
 
 /**
 Add:
