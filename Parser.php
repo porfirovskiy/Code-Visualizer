@@ -2,10 +2,10 @@
 
 class Parser {
 	
-	const SUB_METHOD_PATTERN = "/\\$[a-zA-Z0-9 ,\n()\$_]+->[a-zA-Z0-9 ,\n()\$_\->]+\);/";
+	const SUB_METHOD_PATTERN = "/\\$[a-zA-Z0-9 ,\n()\$_]+->[a-zA-Z0-9 ,\n()'\$_\->]+\);/";
 	const FIRST_LEVEL_PATTERN = "/function[a-zA-Z0-9 ,\n()\$_]+\{/";
 	const SUB_PATTERN_BEGIN = '/function[ ]+';
-	const SUB_PATTERN_END = '[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}+\/"\%.!:@?\'\t*\\\]+?(public|private|protected|static|function)/';
+	const SUB_PATTERN_END = '[a-zA-Z0-9 ,\n()\$_\->\{\;\\$\->=\[\]}+\/"\%.!:@&?\'\t*\\\]+?(public|private|protected|static|function)/';
 	
 	public $methods = [];
 	public $methodsWithSubMethods = [];
@@ -20,8 +20,8 @@ class Parser {
 		$code = $this->getCodeFromFile($className);
 		$this->getAllMethodsFromCode($code);
 		$this->getSubMethods($this->methods, $code);
-		//echo '<pre>';var_dump($this->tree->getStructure());
-		//$this->tree->getAroundTheStructure();
+		echo '<pre>';var_dump($this->tree->getStructure());
+		$this->tree->getAroundTheStructure();
 		//echo '<pre>';var_dump($this->methodsWithSubMethods);die();
 	}
 	

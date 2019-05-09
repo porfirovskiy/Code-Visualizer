@@ -16,15 +16,16 @@ class Tree {
 	
 	
 	public function getAroundTheStructure() {
-		echo 'submit_seo_statistics($insert_array)'."\n";
-		$this->rec('submit_seo_statistics($insert_array)');
+		echo 'get_words_pairs($first_lang, $second_lang, $first_letter)'."\n";
+		$this->rec('get_words_pairs($first_lang, $second_lang, $first_letter)');
 	}
 	
 	private function rec($parent) {
 		if (isset($this->structure[$parent])) {
 			$string = '';
 			foreach ($this->structure[$parent] as $element) {
-				$string .= "(".$parent.")".$element." ";
+				//$string .= "(".$parent.")".$element." ";
+				$string .= $element." ";
 			}
 			echo $string."\n";
 			foreach ($this->structure[$parent] as $element) {
@@ -45,7 +46,7 @@ class Tree {
 		if (isset($this->structure[$parent])) {
 			$string = '';
 			foreach ($this->structure[$parent] as $element) {
-				$string .= "(".$parent.")".$element." ";
+				$string .= $element." ";
 			}
 			echo $string."\n";
 			imagestring($img, 5, 50, $y, $string, $textColor);
