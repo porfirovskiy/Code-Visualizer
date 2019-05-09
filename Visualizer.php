@@ -9,14 +9,14 @@ class Visualizer {
 		//echo "Class $className has methods:\n";//use log method
 		$obj = new Visualizer();
         //$obj->createImage($title, $methods, $subMethods);
-		//$obj->createImage2($title, $methods, $subMethods);
+		$obj->createImage2($title, $methods, $subMethods);
 
 		//echo '<pre>';var_dump($obj->methodsPositions);die();
 	}
 
 
 	public function createImage(string $title, array $methods,  array $subMethods) {
-		$image = @imagecreate(500, 1700) or die("Error");
+		$image = @imagecreate(1700, 1700) or die("Error");
 		$backgroundColor = imagecolorallocate($image, 0, 0, 0);
 		$textColor = imagecolorallocate($image, 233, 14, 91);
 		
@@ -45,13 +45,13 @@ class Visualizer {
 	}
 
 	public function createImage2(string $title, array $methods, object $tree) {
-		$image = @imagecreate(500, 1700) or die("Error");
+		$image = @imagecreate(2000, 1700) or die("Error");
 		$backgroundColor = imagecolorallocate($image, 0, 0, 0);
 		$textColor = imagecolorallocate($image, 233, 14, 91);
 
 		//add text to img
 		imagestring($image, 5, 50, 5, $title, $textColor);
-		$tree->getAroundTheStructure2('submit_seo_statistics($insert_array)', $image, $textColor);
+		$tree->getAroundTheStructure2('get_words_pairs($first_lang, $second_lang, $first_letter)', $image, $textColor);
 		/*$y = 70;
 		foreach ($methods as $method) {
 			$textColor = imagecolorallocate($image, 0, 102, 204);
