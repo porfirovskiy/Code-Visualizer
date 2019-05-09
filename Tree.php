@@ -28,6 +28,7 @@ class Tree {
 				$string .= $element." ";
 			}
 			echo $string."\n";
+			//var_dump($this->structure[$parent]);
 			foreach ($this->structure[$parent] as $element) {
 				//echo $element."\n";
 				$this->rec($element);

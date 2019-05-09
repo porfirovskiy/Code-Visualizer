@@ -258,7 +258,7 @@ class Seo_model extends CI_Model
         $revers = $this->get_revers_for_lang_pair($first_lang, $second_lang);
         $current_lang = $this->get_current_lang($first_lang, $second_lang);
         $land_code = $this->get_lang_code($current_lang);
-        return $this->make_words_pairs($first_letter, $land_code, $revers);
+        return $this->make_words_pairs($first_letter, $lang, $revers);
     }
 
     /**

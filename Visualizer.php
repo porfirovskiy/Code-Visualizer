@@ -9,7 +9,7 @@ class Visualizer {
 		//echo "Class $className has methods:\n";//use log method
 		$obj = new Visualizer();
         //$obj->createImage($title, $methods, $subMethods);
-		$obj->createImage2($title, $methods, $subMethods);
+		//$obj->createImage2($title, $methods, $subMethods);
 
 		//echo '<pre>';var_dump($obj->methodsPositions);die();
 	}

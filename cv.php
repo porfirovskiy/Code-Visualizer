@@ -10,6 +10,11 @@ Visualizer::showClassesMethods('TestClass2.php', $parser->methods, $parser->tree
 
 /**
 Add:
+
+ - исправить поиск методов(переменные могут отличаться названием)
+ make_words_pairs($first_letter, $land, $revers)
+make_words_pairs($first_letter, $land_code, $revers)
+ 
  - namespaes
  - make refactoring
  - comments
