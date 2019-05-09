@@ -63,8 +63,9 @@ class Parser {
 		preg_match_all(self::SUB_METHOD_PATTERN, $subMethodsString, $list, PREG_SET_ORDER);
 			if (!empty($list)) {
 				$list = array_map(function (array $rawName) {
-					$array = explode('->', $rawName[0]);
-					return end($array);
+					$currentMethod = explode('->', $rawName[0]);
+					$currentMethod = str_replace(';', '', $currentMethod);
+					return end($currentMethod);
 				}, $list);
 				$this->tree->add($methodName, $list);
 				//echo '<pre>';var_dump($this->methodsWithSubMethods);
