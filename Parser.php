@@ -11,6 +11,7 @@ class Parser {
 	public $methodsWithSubMethods = [];
 	public $tree;
 	
+	
 	function __construct() {
 		$this->tree = new Tree();
     }

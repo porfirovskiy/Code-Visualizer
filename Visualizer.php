@@ -4,7 +4,7 @@ class Visualizer {
 
 	private $methodsPositions = [];
 	
-	static public function showClassesMethods(string $className, array $methods, object $subMethods) {
+	static public function showClassesMethods(string $className, array $methods, $subMethods) {
 		$title = "Class $className has methods structure:";
 		//echo "Class $className has methods:\n";//use log method
 		$obj = new Visualizer();
@@ -44,7 +44,7 @@ class Visualizer {
 		imagepng($image, 'structure.png');
 	}
 
-	public function createImage2(string $title, array $methods, object $tree) {
+	public function createImage2(string $title, array $methods, $tree) {
 		$image = @imagecreate(2000, 1700) or die("Error");
 		$backgroundColor = imagecolorallocate($image, 0, 0, 0);
 		$textColor = imagecolorallocate($image, 233, 14, 91);
@@ -52,6 +52,13 @@ class Visualizer {
 		//add text to img
 		imagestring($image, 5, 50, 5, $title, $textColor);
 		$tree->getAroundTheStructure2('get_words_pairs($first_lang, $second_lang, $first_letter)', $image, $textColor);
+
+		$white = imagecolorallocate($image, 255, 255, 255);
+		// координаты линии
+		$x1 = 20; $y1 = 50; $x2 = 180; $y2 = 50;
+		// рисуем обычную линию
+		imageline ($image, $x1, $y1, $x2, $y2, $white);
+
 		/*$y = 70;
 		foreach ($methods as $method) {
 			$textColor = imagecolorallocate($image, 0, 102, 204);

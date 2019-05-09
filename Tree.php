@@ -50,7 +50,7 @@ class Tree {
 				$string .= $element." ";
 			}
 			echo $string."\n";
-			imagestring($img, 5, 50, $y, $string, $textColor);
+			imagestring($img, 1, 50, $y, $string, $textColor);
 			$y += 50;
 			foreach ($this->structure[$parent] as $element) {
 				//echo $element."\n";
